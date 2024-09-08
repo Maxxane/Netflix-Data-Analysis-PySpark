@@ -7,7 +7,7 @@ This project leverages PySpark to analyze a dataset of Netflix series. The analy
 ## Project Structure
 
 The project directory structure is organized as follows:
-
+````bash
 Netflix-Data-Analysis-PySpark/
 ├── data/
 │   └── netflix_series_10_columns_data.csv
@@ -24,7 +24,7 @@ Netflix-Data-Analysis-PySpark/
 │   ├── Top_5_Most_Watched.py
 │   └── top_rated_series.py
 └── README.md
-
+````
 
 
 - **data/**: Contains the dataset used for analysis.
