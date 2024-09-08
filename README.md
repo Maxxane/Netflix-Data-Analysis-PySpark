@@ -76,25 +76,27 @@ The dataset is located at `data/netflix_series_10_columns_data.csv`.
    ```bash
    pip install pyspark
    pip install pandas matplotlib
+   ```
    
 2. **Set Up Hadoop**
 
    If running on Windows, ensure Hadoop is properly configured with the winutils.exe file. Set up the HADOOP_HOME environment variable and add it to the PATH:
    ```bash
-   set HADOOP_HOME=C:\hadoop
-   set PATH=%PATH%;%HADOOP_HOME%\bin
-   
+    set HADOOP_HOME=C:\hadoop
+    set PATH=%PATH%;%HADOOP_HOME%\bin
+   ```
 3. **Verify the Setup**
 
    Ensure winutils.exe is properly installed by running the following command in the command prompt:
    ```bash
    C:\hadoop\bin\winutils.exe
-
+   ```
 4. **Run the Analysis**
 
    You can run any of the analysis scripts directly if you have a proper PySpark environment. Replace <script_name> with the name of the script you want to run:
    ```bash
    python <path_to_your_script>/<script_name>.py
+   ```
 
 ## Scripts
 - `correlation_analysis.py`: Analyzes correlations between various features in the dataset.
@@ -108,6 +110,42 @@ The dataset is located at `data/netflix_series_10_columns_data.csv`.
 - `Series_prod_in_years.py`: Examines trends in the number of series released each year.
 - `Top 5 Most Watched.py`: Finds and visualizes the top 5 most-watched series.
 - `top_rated_series.py`: Finds and visualizes the top-rated series.
+
+## Examples
+   Below is an example of a script to analyze the number of series released each year:
+
+   ```bash
+      from pyspark.sql import SparkSession
+      import pandas as pd
+      import matplotlib.pyplot as plt
+      
+      # Initialize Spark session
+      spark = SparkSession.builder.appName("Trends in Series Production").getOrCreate()
+      
+      # Load the dataset
+      df = spark.read.csv("data/netflix_series_10_columns_data.csv", header=True, inferSchema=True)
+      
+      # Group by 'Release Year' and count the number of series released
+      ds = df.groupBy('Release Year').count()
+      
+      # Convert to pandas DataFrame for plotting
+      ds_pandas = ds.toPandas()
+      
+      # Sort by 'Release Year'
+      ds_pandas.sort_values('Release Year', inplace=True)
+      
+      # Plot
+      plt.figure(figsize=(12, 6))
+      plt.plot(ds_pandas['Release Year'], ds_pandas['count'], marker='o', linestyle='-', color='b')
+      plt.title('Number of Series Released Each Year')
+      plt.xlabel('Year')
+      plt.ylabel('Count')
+      plt.xticks(rotation=45)
+      plt.grid(True)
+      plt.tight_layout()
+      plt.show()
+```
+
 
 ## Contributing
    Feel free to open issues or submit pull requests if you have suggestions or improvements.
